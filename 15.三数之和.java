@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /*
  * @lc app=leetcode.cn id=15 lang=java
@@ -61,7 +58,7 @@ class Solution {
             int right = length - 1;
             while (left < right) {
                 sum = nums[i] + nums[left] + nums[right];
-                System.out.println(nums[i] + "," + nums[left] + "," + nums[right]);
+                // System.out.println(nums[i] + "," + nums[left] + "," + nums[right]);
                 if (sum == 0) {
                     list = new ArrayList<>(3);
                     while (left < right && nums[left] == nums[left + 1]) {
@@ -75,7 +72,7 @@ class Solution {
                     list.add(nums[right]);
                     lists.add(list);
                     left++;
-                    right++;
+                    right--;
                 } else if (sum > 0) {
                     right--;
                 } else {

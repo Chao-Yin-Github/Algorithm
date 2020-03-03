@@ -1,5 +1,5 @@
 ---
-date:2020.3.2 17:44:53
+date:2020.03.02 17:44:53
 title:Leetcode 简单题题解
 ---
 ## 两数之和
@@ -21,18 +21,161 @@ title:Leetcode 简单题题解
 
 以为和两数之和类似,只不过复杂度是O(n^2),但是最后还是超时了
 
-真正的解法:双指针!
+真正的解法:**双指针!**
 
-现将数组排序,然后从小到大依次设定一个最小的i,然后 i+1 为左指针,length-1为右指针.
+现将数组排序,最外层循环是从小到大依次设定一个最小的 i,然后 i+1 为左指针,length-1为右指针.
 
-当 i , left 和 right 所代表的值相加为0时则找到一组,为了去重,则需要看一看 left+1 是不是和 left 相同, 如果相同则 left+1,直到 left+1和 left 代表的值不同;right 同理
+当 i,left 和 right 所代表的值相加为0时则找到一组,为了去重,则需要看一看 left+1 是不是和 left 相同, 如果相同则 left+1,直到 left+1和 left 代表的值不同;right 同理
 
-当 i, left 和 right 所代表的值相加大于0的时候,说明right太大,right--
+当 i, left 和 right 所代表的值相加大于0的时候,说明 right 太大,right--
 
-同理,若小于0,则left--
+同理,若小于0,则 left--
 
 当 i 代表的值大于0时,说明最小的已经大于0了,直接结束程序
 
 当 i 大于0并且 i 和 i-1 代表的值相同,则说明有重复,直接进入下一次循环
 
 ---
+
+## 三数最接近之和
+
+只需要找到数组中三个数之和 sum 与给定的 target 数最接近的数
+
+这道题其实和三数之和为0类似,其实就是三数之和的条件的略微不同
+
+解法同样是**双指针**,只不过指针移动的条件不同
+
+首先,前面找到一个符合条件的数组,需要移动两端的指针来达到去重的目的,而这题只需要返回最接近的数,只需要把每次最接近的数保存下来即可,不用去重
+
+其次,前面是当 i,left 和 right 所代表的值之和 sum 大于0时,说明 right 太大,需要 right--.而这题,最先想到的就是类似把条件与0的大小判断改成与target的绝对值相减.如果之前保存的 closest 值与 target 更还是更远,这是第一层判断.如果当前保存的最近值 closest 更远,则需要更新 closest
+
+而第二层判断是,最接近可能略小,也可能略大,所以需要判断此时给定值 target 和 此时 sum 的大小关系.如果前者大,则需要left++,反之 right--
+
+当然,这是顺着前一题的思路想到的
+
+相比这一题,我们可以把这两层反过来,先考虑第一层,再考虑第二层
+
+什么意思呢,先看看第一种方法的代码吧
+
+主要看**isClosest 函数**
+
+```java
+class Solution {
+    /**
+     * 判断是否是最接近的
+     * 
+     * @param closest 当前最接近的
+     * @param sum     新的可能符合条件的值
+     * @param target  给定的目标值
+     * @return 0->可以得到target,1->旧的值更接近,并且比 target 大, -1->旧的值更近,但是比 target 小
+     *         2->新的值更近,但是比 target 大 -2->新的值更近,但是比 target 小
+     */
+    private int isClosest(int closest, int sum, int target) {
+        if (sum == target) {
+            return 0;
+        }
+        // attention:先考虑之前的保存的最近值 closest 近还是现在的 sum 离得近
+        // 如果之前的 closest 最近
+        if (Math.abs(target - closest) <= Math.abs(target - sum)) {
+            // attention:再考虑指针如何移动
+            // 并且 target > sum
+            if (target > sum) {
+                return -1;
+            } else {
+                return 1;
+            }
+            // 如果新的 sum 是最近
+        } else {
+            if (target > sum) {
+                return -2;
+            } else {
+                return 2;
+            }
+        }
+    }
+
+    public int threeSumClosest(int[] nums, int target) {
+        // ...变量初始化...
+        for (int i = 0; i < length; i++) {
+            // ...变量初始化...
+            while (left < right) {
+                sum = nums[i] + nums[left] + nums[right];
+                // 找到最近的了
+                result = isClosest(closest, sum, target);
+                if (result == 0) {
+                    return target;
+                    // 原来的值更接近,并且比 target 小
+                }
+                if (result == -1) {
+                    left++;
+                    // 原来的值更接近,并且比 target 大
+                } else if (result == 1) {
+                    right--;
+                } else if (result == -2) {
+                    closest = sum;
+                    left++;
+                } else if (result == 2) {
+                    closest = sum;
+                    right--;
+                }
+            }
+        }
+        return closest;
+    }
+}
+```
+
+第一种代码的意思是
+
+>先考虑之前的保存的最近值 closest 近还是现在的 sum 离得近
+>
+>再考虑双指针如何移动:是 left++还是 right--
+
+但是,实际上第一层判断并不影响第二层的判断,无论是 当前的 closest 近不近,双指针的移动只和当前得到的 sum 值有关
+
+所以真正的第一个(从第一层变成第一个,是因为已经不是嵌套的两层判断了,而是独立的两个判断)条件判断应该是 target 和 sum 的值哪个大,如果相等,直接返回 target ;如果前者大,则需要 right--;反之,需要 left++
+
+而第二个判断是,target 与 closest 的值更近还是 target 与 sum 的值更近,如果前者 <= 后者 (等于=的情况不是边界条件,放到大于<的判断里面里面也可),则不用更新最接近的值 closest, 反之,需要更新 closest 的值.
+
+第二个方法如下:实际上没有任何性能的优化,只是更好理解
+
+完整代码:
+
+```java
+class Solution {
+       public int threeSumClosest(int[] nums, int target) {
+        int sum;
+        int length = nums.length;
+        int left;
+        int right;
+        Arrays.sort(nums);
+        int closest = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < length; i++) {
+            left = i + 1;
+            right = length - 1;
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            while (left < right) {
+                sum = nums[i] + nums[left] + nums[right];
+                // 找到最近的了
+                if (target == sum) {
+                    return target;
+                    // 原来的值更接近,并且比 target 小
+                }
+                // 现在的值比较小
+                if (target > sum) {
+                    left++;
+                } else {
+                    right--;
+                }
+                // 现在的值更接近
+                if (Math.abs(target - closest) > Math.abs(target - sum)) {
+                    closest = sum;
+                }
+            }
+        }
+        return closest;
+    }
+}
+```

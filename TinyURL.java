@@ -2,10 +2,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Test {
+public class TinyURL {
 
     public static void main(String[] args) {
-        Test test = new Test();
+        TinyURL test = new TinyURL();
         String tinyUrl = test.encode("https://leetcode.com/problems/design-tinyurl");
         System.out.println(tinyUrl);
         System.out.println(test.decode(tinyUrl));
