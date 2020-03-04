@@ -1,2 +1,5 @@
 *.class
 _config.yml
+MainClass.java
+OriginTest.java
+output.out
