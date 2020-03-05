@@ -1,8 +1,8 @@
 /*
  * @lc app=leetcode.cn id=11 lang=java
  *
- * [11] 盛最多水的容器
- *
+ * [11] 盛最多水的容器 2020-03-04 22:45:28
+ * 
  * https://leetcode-cn.com/problems/container-with-most-water/description/
  *
  * algorithms
@@ -31,24 +31,29 @@
  * 
  */
 // @lc code=start
-
 class Solution {
-
     public int maxArea(int[] height) {
         int left = 0;
         int right = height.length - 1;
         int max = -1;
         int sum;
+        int temp;
         while (left < right) {
-            sum = Math.min(height[left], height[right]) * (right - left);
+            sum = (right - left) * Math.min(height[left], height[right]);
             max = Math.max(sum, max);
             if (left + 1 == right) {
                 break;
             }
             if (height[left] < height[right]) {
-                left++;
-            } else if (height[left] >= height[right]) {
-                right--;
+                temp = height[left];
+                while (left < right && temp >= height[left]) {
+                    left++;
+                }
+            } else {
+                temp = height[right];
+                while (left < right && temp >= height[right]) {
+                    right--;
+                }
             }
         }
         return max;
