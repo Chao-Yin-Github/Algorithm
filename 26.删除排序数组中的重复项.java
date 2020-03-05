@@ -2,7 +2,10 @@
  * @lc app=leetcode.cn id=26 lang=java
  *
  * [26] 删除排序数组中的重复项
- *
+ * 
+ * started at 2020-03-05 17:10:11
+ * accomplished at 2020-03-05 17:22:19
+ * 
  * https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/description/
  *
  * algorithms
