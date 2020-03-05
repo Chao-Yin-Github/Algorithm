@@ -1,5 +1,3 @@
-import jdk.jfr.Experimental;
-
 /*
  * @lc app=leetcode.cn id=19 lang=java
  *
@@ -43,8 +41,19 @@ import jdk.jfr.Experimental;
  * Definition for singly-linked list. public class ListNode { int val; ListNode
  * next; ListNode(int x) { val = x; } }
  * 
- * attention: 虽然报错说没有找到 ListNode,但是不用自己写,上面的说明的内容即是算法需要用到的
+ * attention: 虽然报错说没有找到 ListNode,但是提交时不用自己写,上面的说明的内容即是算法需要用到的
  */
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+        val = x;
+    }
+}
+
+// attention: 上面这个 ListNode 的定义需要在测试和提交时删掉,不然会报错
+
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
         if (n == 0) {
@@ -62,7 +71,9 @@ class Solution {
             next = next.next;
         }
         // 使用times进行边界处理
-        // 对应 [1] 1 或者 [1,2,3] 3 这种情况
+        // else 对应 [1] 1 或者 [1,2,3] 3 这种情况
+        // 因为这种情况下,next 已经指向最后一个结点
+        // 所以第二个while循环的条件不成立,first 指针不会移动,这样就要删除头节点了,对应下面 else的情况
         if (times == n) {
             first.next = first.next.next;
             return head;
