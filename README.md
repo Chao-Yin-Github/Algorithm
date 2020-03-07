@@ -1,6 +1,3 @@
----
-date: 2020-03-07 23:13:54
----
 # Some Java implementations and solutions of Leetcode problems
 
 <p align="center">
