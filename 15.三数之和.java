@@ -51,6 +51,7 @@ class Solution {
                 break;
             }
             // 如果这个和上一个一样,那么会重复,直接找下一个
+            // attention: 注意是上一个值而不是下一个,因为上一个 i-1 所代表的取值范围一定大于这一个 i
             if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
@@ -58,7 +59,6 @@ class Solution {
             int right = length - 1;
             while (left < right) {
                 sum = nums[i] + nums[left] + nums[right];
-                // System.out.println(nums[i] + "," + nums[left] + "," + nums[right]);
                 if (sum == 0) {
                     list = new ArrayList<>(3);
                     while (left < right && nums[left] == nums[left + 1]) {
