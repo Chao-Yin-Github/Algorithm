@@ -44,12 +44,12 @@ import java.util.Set;
 class Solution {
     public int lengthOfLongestSubstring(String s) {
         int maxLen = 0, i = 0, j = 0, Len = s.length();
-        Set<Character> Aset = new HashSet<>();
+        Set<Character> set = new HashSet<>();
         while (j < Len && i < Len) {
-            if (Aset.contains(s.charAt(j))) {
-                Aset.remove(s.charAt(i++));
+            if (set.contains(s.charAt(j))) {
+                set.remove(s.charAt(i++));
             } else {
-                Aset.add(s.charAt(j++));
+                set.add(s.charAt(j++));
                 maxLen = maxLen > j - i ? maxLen : j - i;
             }
         }
