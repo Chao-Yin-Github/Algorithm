@@ -59,47 +59,48 @@ import java.util.Stack;
 
 // @lc code=start
 class MinStack {
-    private Stack<Integer> stackData;
-
-    private Stack<Integer> stackMin;
+    Stack<Integer> data;
+    Stack<Integer> min;
 
     /** initialize your data structure here. */
     public MinStack() {
-        stackData = new Stack<Integer>();
-        stackMin = new Stack<Integer>();
+        data = new Stack<Integer>();
+        min = new Stack<Integer>();
     }
 
     public void push(int x) {
-        stackData.push(x);
-        if (!stackMin.isEmpty()) {
-            if (stackMin.peek() >= x) {
-                stackMin.push(x);
+        data.push(x);
+        if (!min.isEmpty()) {
+            int top = min.peek();
+            if (top >= x) {
+                min.push(x);
             }
         } else {
-            stackMin.push(x);
+            min.push(x);
         }
     }
 
     public void pop() {
-        if (stackData.isEmpty()) {
-            return;
+        int temp = 0;
+        if (!data.isEmpty()) {
+            temp = data.pop();
         }
-        Integer value = stackData.pop();
-        if (stackMin.peek().equals(value)) {
-            stackMin.pop();
+        if (!min.isEmpty()) {
+            if (min.peek() == temp) {
+                min.pop();
+            }
         }
     }
 
     public int top() {
-        return stackData.peek();
+        return data.peek();
     }
 
     public int getMin() {
-        if (!stackMin.isEmpty()) {
-            return stackMin.peek();
-        } else {
-            throw new RuntimeException("error");
+        if (!min.isEmpty()) {
+            return min.peek();
         }
+        throw new IndexOutOfBoundsException("越界了");
     }
 }
 
@@ -108,4 +109,5 @@ class MinStack {
  * new MinStack(); obj.push(x); obj.pop(); int param_3 = obj.top(); int param_4
  * = obj.getMin();
  */
+
 // @lc code=end

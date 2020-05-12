@@ -29,29 +29,34 @@
  * 
  * 
  */
-
-// @lc code=start
 class Solution {
     public String longestPalindrome(String s) {
-        if (s == null || s.length() <= 1) {
+        int start, end;
+        start = end = 0;
+        int maxLen = 1;
+        if (s.length() == 1 || s.length() == 0) {
             return s;
         }
-        // dp[i][j] 表示从 i 到 j 是否为回文串
-        // 状态转移方程: dp[i][j] = (dp[i+1][j-1] && s[i]==s[j])
-        boolean[][] dp = new boolean[s.length()][s.length()];
-        String sub = "";
-        for (int i = s.length() - 1; i >= 0; i--) {
-            dp[i][i] = true;
-            for (int j = i + 1; j < s.length(); j++) {
-                // j-i==1 说明字符串长度为1
-                if ((dp[i + 1][j - 1] || j - i == 1) && s.charAt(i) == s.charAt(j)) {
-                    dp[i][j] = true;
-                    if (j - i + 1 > sub.length()) {
-                        sub = s.substring(i, j + 1);
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i + maxLen; j < s.length(); j++) {
+                if (isHuiWen(i, j, s)) {
+                    if (end - start < j - i) {
+                        start = i;
+                        end = j;
+                        maxLen = end - start + 1;
                     }
                 }
             }
         }
-        return sub.equals("") ? s.substring(0, 1) : sub;
+        return s.substring(start, end + 1);
+    }
+
+    public boolean isHuiWen(int i, int j, String s) {
+        for (; i <= j; i++, j--) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
