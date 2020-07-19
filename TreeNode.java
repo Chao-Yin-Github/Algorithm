@@ -3,6 +3,7 @@ public class TreeNode {
     }
 
     public TreeNode(int i) {
+        val = i;
     }
 
     public int val;

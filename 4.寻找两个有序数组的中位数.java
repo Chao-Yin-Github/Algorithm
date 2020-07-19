@@ -1,9 +1,3 @@
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /*
  * @lc app=leetcode.cn id=4 lang=java
  *
@@ -44,33 +38,42 @@ import java.util.stream.Stream;
  */
 
 // @lc code=start
-public class Solution {
+class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        if (nums1 == null) {
-            nums1 = new int[0];
+        int l1 = nums1.length;
+        int l2 = nums2.length;
+        int leftSize = l1 + ((l2 - l1 + 1) >> 1);
+        if (l1 > l2) {
+            int[] temp = nums1;
+            nums1 = nums2;
+            nums2 = temp;
+            int tempLen = l2;
+            l2 = l1;
+            l1 = tempLen;
         }
-        if (nums2 == null) {
-            nums2 = new int[0];
-        }
-        int last = 0, now = 0;
-        int len1, len2, len;
-        len1 = nums1.length;
-        len2 = nums2.length;
-        len = len1 + len2;
-        int startLen1 = 0, startLen2 = 0;
-
-        for (int i = 0; i < len / 2 + 1; i++) {
-            last = now;
-            if (startLen1 < len1 && (startLen2 >= len2 || nums1[startLen1] < nums2[startLen2])) {
-                now = nums1[startLen1++];
+        int left, right;
+        left = 0;
+        right = l1;
+        while (left < right) {
+            int i = left + ((right - left + 1) >> 1);
+            int j = leftSize - i;
+            if (nums1[i - 1] > nums2[j]) {
+                right = i - 1;
             } else {
-                now = nums2[startLen2++];
+                left = i;
             }
         }
-        if (len % 2 == 0) {
-            return 1.0 * (last + now) / 2;
+        right = leftSize - left;
+        int leftMax1 = left > 0 ? nums1[left - 1] : Integer.MIN_VALUE;
+        int leftMax2 = right > 0 ? nums2[right - 1] : Integer.MIN_VALUE;
+        int rightMin1 = left < l1 ? nums1[left] : Integer.MAX_VALUE;
+        int rightMin2 = right < l2 ? nums2[right] : Integer.MAX_VALUE;
+        if (((l2 + l1) & 1) == 1) {
+            return Math.max(leftMax1, leftMax2);
         } else {
-            return 1.0 * now;
+            int max = Math.max(leftMax1, leftMax2);
+            int min = Math.min(rightMin1, rightMin2);
+            return (double) (max + min) / 2;
         }
     }
 }
