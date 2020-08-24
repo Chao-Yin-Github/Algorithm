@@ -60,8 +60,6 @@ class Solution {
             return;
         }
         list.add(root.val);
-        list.forEach(item -> System.out.print(item + " "));
-        System.out.println();
         sum -= root.val;
         if (root.left == null && root.right == null) {
             if (sum == 0) {

@@ -1,6 +1,9 @@
 *.class
 _config.yml
+Main.java
 MainClass.java
 OriginTest.java
 output.out
 /.gtm/
+/test/
+test/
